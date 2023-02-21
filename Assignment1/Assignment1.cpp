@@ -58,11 +58,12 @@ vector<string> split(const string& s, char delimiter) {
     string token;
     istringstream tokenStream(s);
     while (getline(tokenStream, token, delimiter)) {
-        tokens.push_back(token);
+        if (!token.empty()) {  // add this line to skip empty tokens
+            tokens.push_back(token);
+        }
     }
     return tokens;
 }
-
 int readCSV(const string& carlist, Vehicle vehicles[]) {
     int numVehicles = 0;
     ifstream inputFile(carlist);
@@ -72,6 +73,9 @@ int readCSV(const string& carlist, Vehicle vehicles[]) {
 
     while (getline(inputFile, line)) {
         vector<string> fields = split(line, ',');
+        if (fields.size() != 12) {  // skip rows with missing fields
+            continue;
+        }
         vehicles[numVehicles].title = fields[0];
         vehicles[numVehicles].price = fields[1];
         vehicles[numVehicles].registrationDate = fields[2];
@@ -87,14 +91,13 @@ int readCSV(const string& carlist, Vehicle vehicles[]) {
     }
     inputFile.close();
     return numVehicles;
-
 }
 
 int main() {
     string choice;
     bool validInput = false;
     Vehicle vehicles[MAX_VEHICLES];
-    int numVehicles = readCSV("C:\\Users\\User\\Desktop\\Year2 Sem2\\Data Structure(DSTR)\\Assignment\\carlist.csv", vehicles);
+    int numVehicles = readCSV("C:\\Users\\User\\Desktop\\Year2 Sem2\\Data Structure(DSTR)\\Assignment\\carlist.csv",vehicles);
     while (!validInput) {
         cout << "What report you want to generate:\n1)Sales report\n2)Client report\n3)Billing report\nMy choice is (1/2/3):";
         cin >> choice;
