@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-
 using namespace std;
 
 const int MAX_VEHICLES = 2000;  // Maximum number of vehicles in the CSV file
@@ -24,6 +23,34 @@ struct Vehicle {
     string URL;
     string saleDates;
 };
+
+void generateSalesReport(Vehicle vehicles[], int numVehicles) {
+    // Create a vector to store the sold vehicles
+    vector<Vehicle> soldVehicles;
+
+    // Loop through all the vehicles
+    for (int i = 0; i < numVehicles; i++) {
+        // Check if the vehicle has been sold
+        if (!vehicles[i].saleDates.empty()) {
+            // Add the sold vehicle to the vector
+            soldVehicles.push_back(vehicles[i]);
+        }
+    }
+
+
+    // Print the sales report
+    cout << "Sales Report:\n";
+    cout << "---------------------------\n";
+    cout << "Total Vehicles Sold: " << soldVehicles.size() << endl;
+    cout << "---------------------------\n";
+    int numVehiclesToShow = min(100, (int)soldVehicles.size()); // show only top 15 vehicles
+    for (int i = 0; i < numVehiclesToShow; i++) {
+        cout << "Title: " << soldVehicles[i].title << endl;
+        cout << "Price: " << soldVehicles[i].price << endl;
+        cout << "Sale Date(s): " << soldVehicles[i].saleDates << endl;
+        cout << "---------------------------\n";
+    }
+}
 
 // Function to split a string into an array of strings
 vector<string> split(const string& s, char delimiter) {
@@ -60,18 +87,23 @@ int readCSV(const string& carlist, Vehicle vehicles[]) {
     }
     inputFile.close();
     return numVehicles;
+
 }
 
 int main() {
     string choice;
     bool validInput = false;
+    Vehicle vehicles[MAX_VEHICLES];
+    int numVehicles = readCSV("C:\\Users\\User\\Desktop\\Year2 Sem2\\Data Structure(DSTR)\\Assignment\\carlist.csv", vehicles);
     while (!validInput) {
-        cout << "What report you want to generate:\n1)Sales report\n2)Client report\n3)Billing report\nMy choice is:";
+        cout << "What report you want to generate:\n1)Sales report\n2)Client report\n3)Billing report\nMy choice is (1/2/3):";
         cin >> choice;
 
         if (choice == "1") {
             // Generate sales report
             validInput = true;
+            generateSalesReport(vehicles, numVehicles);// call generateSalesReport function
+
 
         }
         else if (choice == "2") {
@@ -86,25 +118,26 @@ int main() {
             cout << "Invalid input. Please enter 1, 2, or 3.\n";
         }
     }
-    Vehicle vehicles[MAX_VEHICLES];
-    int numVehicles = readCSV("C:\\Users\\User\\Desktop\\Year2 Sem2\\Data Structure(DSTR)\\Assignment\\carlist.csv", vehicles);
-    // Print the data for each vehicle
-    for (int i = 0; i < numVehicles; i++) {
-        cout << "Title: " << vehicles[i].title << endl;
-        cout << "Price: " << vehicles[i].price << endl;
-        cout << "Registration Date: " << vehicles[i].registrationDate << endl;
-        cout << "Mileage: " << vehicles[i].mileage << endl;
-        cout << "Fuel Type: " << vehicles[i].fuelType << endl;
-        cout << "Transmission: " << vehicles[i].transmission << endl;
-        cout << "Engine Size: " << vehicles[i].engineSize << endl;
-        cout << "Doors: " << vehicles[i].doors << endl;
-        cout << "Color: " << vehicles[i].color << endl;
-        cout << "Body Type: " << vehicles[i].bodyType << endl;
-        cout << "URL:" << vehicles[i].URL << endl;
-        cout << "Sale Dates:" << vehicles[i].saleDates << endl;
-    }
     return 0;
 }
+    //Vehicle vehicles[MAX_VEHICLES];
+    //int numVehicles = readCSV("C:\\Users\\User\\Desktop\\Year2 Sem2\\Data Structure(DSTR)\\Assignment\\carlist.csv", vehicles);
+    //// Print the data for each vehicle
+    //for (int i = 0; i < numVehicles; i++) {
+    //    cout << "Title: " << vehicles[i].title << endl;
+    //    cout << "Price: " << vehicles[i].price << endl;
+    //    cout << "Registration Date: " << vehicles[i].registrationDate << endl;
+    //    cout << "Mileage: " << vehicles[i].mileage << endl;
+    //    cout << "Fuel Type: " << vehicles[i].fuelType << endl;
+    //    cout << "Transmission: " << vehicles[i].transmission << endl;
+    //    cout << "Engine Size: " << vehicles[i].engineSize << endl;
+    //    cout << "Doors: " << vehicles[i].doors << endl;
+    //    cout << "Color: " << vehicles[i].color << endl;
+    //    cout << "Body Type: " << vehicles[i].bodyType << endl;
+    //    cout << "URL:" << vehicles[i].URL << endl;
+    //    cout << "Sale Dates:" << vehicles[i].saleDates << endl;
+    //}
+
     // Print the data for each vehicle
     //for (int i = 0; i < numVehicles; i++) {
     //    cout << "Title: " << vehicles[i].title << endl;
