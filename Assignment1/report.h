@@ -4,12 +4,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "searchbyYearFuel.h"
-struct User {
-    string username;
-    string password;
-};
-extern User users[];
 
 using namespace std;
 
@@ -29,167 +23,146 @@ struct Vehicle {
     string URL;
     string saleDates;
 };
+vector<Vehicle> arrayvehicle();
 
 
+int totalCars();
+struct Invoice {
+    string invoice_id,
+        vehicle_title,
+        registration_year,
+        mileage,
+        engine_size,
+        url,
+        invoice_date,
+        price;
+};
 
+int calculateRevenue(const vector<Vehicle>& vehicles);
 
-// Function to split a string into an array of strings
-vector<string> split(const string& s, char delimiter) {
-    vector<string> tokens;
-    string token;
-    istringstream tokenStream(s);
-    while (getline(tokenStream, token, delimiter)) {
-        if (!token.empty()) {  // add this line to skip empty tokens
-            tokens.push_back(token);
-        }
-    }
-    return tokens;
-}
-int readCSV(const string& carlist, Vehicle vehicles[]) {
-    int numVehicles = 0;
-    ifstream inputFile(carlist);
-    string line;
-    getline(inputFile, line);  // skip the header line
+float calculateAveragePrice(const vector<Vehicle>& vehicles);
 
-    while (getline(inputFile, line)) {
-        vector<string> fields = split(line, ',');
-        if (fields.size() != 12) {  // skip rows with missing fields
-            continue;
-        }
-        vehicles[numVehicles].title = fields[0];
-        vehicles[numVehicles].price = fields[1].substr(2);
-        vehicles[numVehicles].registrationDate = fields[2];
-        vehicles[numVehicles].fuelType = fields[4];
-        vehicles[numVehicles].transmission = fields[5];
-        vehicles[numVehicles].engineSize = fields[6];
-        vehicles[numVehicles].doors = fields[7];
-        vehicles[numVehicles].color = fields[8];
-        vehicles[numVehicles].bodyType = fields[9];
-        vehicles[numVehicles].URL = fields[10];
-        vehicles[numVehicles].saleDates = fields[11];
-        numVehicles++;
-    }
-    inputFile.close();
-    return numVehicles;
-}
-int numVehiclesSold(Vehicle vehicle[], int numVehicles) {
-    // Create a vector to store the sold vehicles
-    int count = 0;
-    // Loop through all the vehicles
-    for (int i = 0; i < numVehicles; i++) {
-        // Check if the vehicle has been sold
-        if (!vehicle[i].saleDates.empty()) {
-            // Add the sold vehicle to the vector
-            count++;
-        }
-    }
-    return count;
-}
-int calculateRevenue(Vehicle vehicles[], int numVehicles) {
-    int totalRevenue = 0;
-    for (int i = 0; i < numVehicles; i++) {
-        try {
-            // convert the price string to an integer
-            int price = stoi(vehicles[i].price);
-            totalRevenue += price;
-        }
-        catch (const invalid_argument& e) {
+struct report
+{
+    void generateClientReport(const vector<vector<string>>& content) {
+        vector<Invoice>invoices;
+        vector<Vehicle>vehicles;
+        // Generate report header
+        cout << "---------------------- CLIENT REPORT ----------------------" << endl;
+        cout << "Name:" << "" << endl;
+        // Add the current date to the report header
+        cout << "Date of purchase:" << "" << endl;
+        cout << "--------------------- VEHICLE DETAILS ----------------------" << endl;
+        cout << "Vehicle Information:" << endl;
 
-        }
-    }
-    return totalRevenue;
-}
+        for (const auto& invoice : invoices) {
 
-float calculateAveragePrice(Vehicle vehicle[], int numVehicles) {
-    int totalRevenue = 0;
-    for (int i = 0; i < numVehicles; i++) {
-        try {
-            //convert the price string to an integer
-            int price = stoi(vehicle[i].price);
-            totalRevenue += price;
-        }
-        catch (const invalid_argument& e) {
-            cout << "Its not somethings is wrong! Is every things is wrong!!" << endl;
-        }
-        float avgPrice = static_cast<float>(totalRevenue) / numVehicles;
-        return avgPrice;
-    }
-}
-void generateClientReport(const User users[], vector <search::Invoice> invoices, Vehicle vehicle[], int numVehicles) {
-    string Data_tt,Data_p,Data_rd;
-
-    // Generate report header
-    cout << "---------------------- CLIENT REPORT ----------------------" << endl;
-    cout << "Name:" << users[0].username << endl;
-    cout << "Date of purchased:" << vehicle->saleDates << endl;
-    cout << "--------------------- VEHICLE DETAILS ----------------------" << endl;
-    cout << "Vehicle Information:" << endl;
-
-        for (auto invoice : invoices) {
-            Data_tt = invoice.vehicle_title;
-            Data_p = invoice.price;
-            Data_rd = invoice.registration_year;
-            if (invoice.vehicle_title == vehicle->title) {
+            //if (invoice.vehicle_title == xxx.title) {
                 // Generate report body for this vehicle
-                cout << "Vehicle Tile:" << Data_tt << endl;
-                cout << "Vehicle Price:" << Data_p << endl;
-                cout << "Vehicle Registration Date:" << Data_rd << endl;
-                cout << "Vehicle Fuel Type: " << vehicle->fuelType << endl;
-                cout << "Vehicle Color: " << vehicle->color << endl;
+                cout << "Vehicle Title:" << "" << endl;
+                cout << "Vehicle Price:" << "" << endl;
+                cout << "Vehicle Registration Date:" << "" << endl;
+                cout << "Vehicle Fuel Type: " << "" << endl;
+                cout << "Vehicle Color: " << "" << endl;
+                cout << "-----------------------------------------------------------" << endl;
+           // }
+
+        }
+    }
+        void generateSalesReport(vector<vector<string>>&content) {
+            // Generate report header
+            vector<Invoice>invoices;
+            vector<Vehicle>arrayvehicle;
+            cout << "---------------------- SALES REPORT ----------------------" << endl;
+            cout << "Total vehicles sold: " << totalCars<< endl;
+            cout << "Total revenue: $" << calculateRevenue(arrayvehicle) << endl;
+            cout << "Average Price of Vehicles:" << calculateAveragePrice(arrayvehicle) << endl;
+            //Generate report body
+            cout << "--------------------- SALES DETAILS ----------------------" << endl;
+            for (auto invoice : invoices)
+            {
+                cout << "Invoice ID:" << invoice.invoice_id << endl;
+                cout << "Date:" << invoice.invoice_date << endl;
+                cout << "Total Price:$" << invoice.price << endl;
+                cout << "Vehicles been sold:" << invoice.vehicle_title << endl;
             }
+            //Generate report end
             cout << "-----------------------------------------------------------" << endl;
         }
-}
-void generateSalesReport(vector <search::Invoice> invoices, Vehicle vehicle[], int numVehicles) {
-    // Generate report header
-    cout << "---------------------- SALES REPORT ----------------------" << endl;
-    cout << "Total vehicles sold: " << numVehiclesSold(vehicle, numVehicles) << endl;
-    cout << "Total revenue: $" << calculateRevenue(vehicle, numVehicles) << endl;
-    cout << "Average Price of Vehicles:" << calculateAveragePrice(vehicle, numVehicles) << endl;
-    //Generate report body
-    cout << "--------------------- SALES DETAILS ----------------------" << endl;
-    for (auto invoice : invoices) 
-{
-        cout << "Invoice ID:" << invoice.invoice_id << endl;
-        cout << "Date:" << invoice.invoice_date << endl;
-        cout << "Total Price:$" << invoice.price << endl;
-        cout << "Vehicles been sold:" << invoice.vehicle_title << endl;
-    }
-    //Generate report end
-    cout << "-----------------------------------------------------------" << endl;
-}
 
-int report() {
-    string choice;
-    bool validInput = false;
-    Vehicle vehicle[MAX_VEHICLES];
-    vector<search::Invoice> invoices;
-    int numVehicles = readCSV("C:\\Users\\User\\Desktop\\Year2 Sem2\\Data Structure(DSTR)\\Assignment\\carlist.csv", vehicle);
-    while (!validInput) {
-        cout << "What report you want to generate:\n1)Sales report\n2)Client report\n3)Billing report\nMy choice is (1/2/3):";
-        cin >> choice;
-
-        if (choice == "1") {
-            // Generate sales report
-            validInput = true;
-            generateSalesReport(invoices, vehicle, numVehicles);
+        void generateBilingReport(vector<vector<string>>&content) {
+            //Generate report header
+            cout << "---------------------- BILLING REPORT ----------------------" << endl;
+            cout << "Client Name:" << "" << endl;
+            cout << "Client Information" << "" << endl;
+            cout << "---------------------- VEHICLE INFORMATION ----------------------" << endl;
+            cout << "Car ID" << "" << endl;
+            cout << "Car Price" << "" << endl;
+            cout << "Date" << "" << endl;
+            //Generate report end
+            cout << "-----------------------------------------------------------" << endl;
 
         }
-        else if (choice == "2") {
-            // Generate client report
-            validInput = true;
-            generateClientReport(users, invoices, vehicle, numVehicles);
-        }
-        else if (choice == "3") {
-            // Generate billing report
-            validInput = true;
-        }
-        else {
-            cout << "Invalid input. Please enter 1, 2, or 3.\n";
-        }
-    }
-    return 0;
-}
+    
+
+};
+
+
+//// Function to split a string into an array of strings
+//vector<string> split(const string& s, char delimiter) {
+//    vector<string> tokens;
+//    string token;
+//    istringstream tokenStream(s);
+//    while (getline(tokenStream, token, delimiter)) {
+//        if (!token.empty()) {  // add this line to skip empty tokens
+//            tokens.push_back(token);
+//        }
+//    }
+//    return tokens;
+//}
+//
+//int calculateTotalData() {
+//    vector<vector<string>> content;
+//
+//    // Open the CSV file
+//    ifstream file("carlist.csv");
+//
+//    // Read the header row from the file
+//    string header;
+//    getline(file, header);
+//
+//    // Read the data from the file
+//    string line;
+//    int totalData = 0;
+//    while (getline(file, line)) {
+//        vector<string> row;
+//        istringstream ss(line);
+//        string cell;
+//        while (getline(ss, cell, ',')) {
+//            row.push_back(cell);
+//        }
+//        content.push_back(row);
+//        totalData++;
+//    }
+//
+//    file.close();
+//    return totalData;
+//}
+//int numVehiclesSold(const vector<vector<string>>& content) {
+//    int count = 0;
+//    for (const auto& row : content) {
+//        if (!row[11].empty()) {  // Check if the sold_date field is not empty
+//            count++;
+//        }
+//    }
+//    return count;
+//}
+
+
+//int report() {
+//   
+//    return 0;
+//}
 //// calculate total revenue and number of vehicles sold
 //double totalRevenue = 0;
 //int numVehiclesSold = 0;
@@ -221,3 +194,31 @@ int report() {
 
 //// generate report footer
 //cout << "-----------------------------------------------------------" << endl;
+// 
+//int readCSV( Vehicle vehicles[]) {
+//    int numVehicles = 0;
+//    ifstream inputFile("carlist.csv");
+//    string line;
+//    getline(inputFile, line);  // skip the header line
+//
+//    while (getline(inputFile, line)) {
+//        vector<string> fields = split(line, ',');
+//        if (fields.size() != 12) {  // skip rows with missing fields
+//            continue;
+//        }
+//        vehicles[numVehicles].title = fields[0];
+//        vehicles[numVehicles].price = fields[1].substr(2);
+//        vehicles[numVehicles].registrationDate = fields[2];
+//        vehicles[numVehicles].fuelType = fields[4];
+//        vehicles[numVehicles].transmission = fields[5];
+//        vehicles[numVehicles].engineSize = fields[6];
+//        vehicles[numVehicles].doors = fields[7];
+//        vehicles[numVehicles].color = fields[8];
+//        vehicles[numVehicles].bodyType = fields[9];
+//        vehicles[numVehicles].URL = fields[10];
+//        vehicles[numVehicles].saleDates = fields[11];
+//        numVehicles++;
+//    }
+//    inputFile.close();
+//    return numVehicles;
+//}

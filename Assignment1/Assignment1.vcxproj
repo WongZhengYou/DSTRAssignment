@@ -128,12 +128,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="report.h" />
+    <ClCompile Include="search.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\Desktop\Year2 Sem2\Data Structure(DSTR)\Assignment\carlist.csv" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bill.h" />
     <ClInclude Include="searchbyYearFuel.h" />
+    <ClInclude Include="vehicle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
