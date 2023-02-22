@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "searchbyYearFuel.h"
+#include "search.cpp"
 
 using namespace std;
 
@@ -94,15 +96,58 @@ int calculateRevenue(Vehicle vehicles[], int numVehicles) {
     return totalRevenue;
 }
 
+float calculateAveragePrice(Vehicle vehicle[], int numVehicles) {
+    int totalRevenue = 0;
+    for (int i = 0; i < numVehicles; i++) {
+        try {
+            //convert the price string to an integer
+            int price = stoi(vehicle[i].price);
+            totalRevenue += price;
+        }
+        catch (const invalid_argument& e) {
+            cout << "Its not somethings is wrong! Is every things is wrong!!" << endl;
+        }
+        float avgPrice = static_cast<float>(totalRevenue) / numVehicles;
+        return avgPrice;
+    }
+}
+void generateClientReport(const User users[], vector <search::Invoice> invoices, Vehicle vehicle[], int numVehicles) {
+    string Data_tt,Data_p,Data_rd;
 
-void generateSalesReport(vector <Invoice> invoices, Vehicle vehicle[], int numVehicles) {
+    // Generate report header
+    cout << "---------------------- CLIENT REPORT ----------------------" << endl;
+    cout << "Name:" << users[0].username << endl;
+    cout << "Date of purchased:" << vehicle->saleDates << endl;
+    cout << "--------------------- VEHICLE DETAILS ----------------------" << endl;
+    cout << "Vehicle Information:" << endl;
+
+        for (auto invoice : invoices) {
+            Data_tt = invoice.vehicle_title;
+            Data_p = invoice.price;
+            Data_rd = invoice.registration_year;
+            if (invoice.vehicle_title == vehicle->title) {
+                // Generate report body for this vehicle
+                cout << "Vehicle Tile:" << Data_tt << endl;
+                cout << "Vehicle Price:" << Data_p << endl;
+                cout << "Vehicle Registration Date:" << Data_rd << endl;
+                cout << "Vehicle Fuel Type: " << vehicle->fuelType << endl;
+                cout << "Vehicle Color: " << vehicle->color << endl;
+            }
+            cout << "-----------------------------------------------------------" << endl;
+        }
+        
+
+}
+void generateSalesReport(vector <search::Invoice> invoices, Vehicle vehicle[], int numVehicles) {
     // Generate report header
     cout << "---------------------- SALES REPORT ----------------------" << endl;
     cout << "Total vehicles sold: " << numVehiclesSold(vehicle, numVehicles) << endl;
-    cout << "Total revenue: $" << calculateRevenue(vehicle,numVehicles) << endl;
+    cout << "Total revenue: $" << calculateRevenue(vehicle, numVehicles) << endl;
+    cout << "Average Price of Vehicles:" << calculateAveragePrice(vehicle, numVehicles) << endl;
     //Generate report body
     cout << "--------------------- SALES DETAILS ----------------------" << endl;
-    for (auto invoice : invoices) {
+    for (auto invoice : invoices) 
+{
         cout << "Invoice ID:" << invoice.invoice_id << endl;
         cout << "Date:" << invoice.invoice_date << endl;
         cout << "Total Price:$" << invoice.price << endl;
@@ -112,10 +157,11 @@ void generateSalesReport(vector <Invoice> invoices, Vehicle vehicle[], int numVe
     cout << "-----------------------------------------------------------" << endl;
 }
 
-int main() {
+int report() {
     string choice;
     bool validInput = false;
     Vehicle vehicle[MAX_VEHICLES];
+    vector<search::Invoice> invoices;
     int numVehicles = readCSV("C:\\Users\\User\\Desktop\\Year2 Sem2\\Data Structure(DSTR)\\Assignment\\carlist.csv", vehicle);
     while (!validInput) {
         cout << "What report you want to generate:\n1)Sales report\n2)Client report\n3)Billing report\nMy choice is (1/2/3):";
@@ -130,7 +176,7 @@ int main() {
         else if (choice == "2") {
             // Generate client report
             validInput = true;
-
+            generateClientReport(users,invoices,vehicle,numVehicles)
         }
         else if (choice == "3") {
             // Generate billing report
