@@ -4,7 +4,6 @@
 
 using namespace std;
 
-
 struct search {
     void searchbyYearFuelh(const vector<vector<string>>& content) {
         int start_year, end_year;

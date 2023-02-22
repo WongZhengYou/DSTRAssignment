@@ -5,7 +5,11 @@
 #include <string>
 #include <vector>
 #include "searchbyYearFuel.h"
-#include "search.cpp"
+struct User {
+    string username;
+    string password;
+};
+extern User users[];
 
 using namespace std;
 
@@ -135,8 +139,6 @@ void generateClientReport(const User users[], vector <search::Invoice> invoices,
             }
             cout << "-----------------------------------------------------------" << endl;
         }
-        
-
 }
 void generateSalesReport(vector <search::Invoice> invoices, Vehicle vehicle[], int numVehicles) {
     // Generate report header
@@ -176,7 +178,7 @@ int report() {
         else if (choice == "2") {
             // Generate client report
             validInput = true;
-            generateClientReport(users,invoices,vehicle,numVehicles)
+            generateClientReport(users, invoices, vehicle, numVehicles);
         }
         else if (choice == "3") {
             // Generate billing report

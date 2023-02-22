@@ -4,6 +4,7 @@
 #include <vector>
 #include <iomanip>
 #include "searchbyYearFuel.h"
+#include "report.h"
 
 using namespace std;
 const int MAX_USERS = 100;
