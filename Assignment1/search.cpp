@@ -149,7 +149,8 @@ int main() {
                 cout << "Please select an option:\n";
                 cout << "1. Search\n";
                 cout << "2. Create Invoice\n";
-                cout << "3. Exit\n";
+                cout << "3. Generate Report\n";
+                cout << "4. Exit";
                 cout << "Your choice: ";
                 cin >> choice;
 
@@ -194,7 +195,38 @@ int main() {
                     break;
                 }
                 case 3: {
-                    cout << "Exiting the program...\n";
+                    string choice;
+                    bool validInput = false;
+                    report r;
+                    while (!validInput) {
+                        cout << "What report you want to generate:\n1)Sales report\n2)Client report\n3)Billing report\nMy choice is (1/2/3):";
+                        cin >> choice;
+
+                        if (choice == "1") {
+                            // Generate sales report
+                            validInput = true;
+
+                            r.generateSalesReport(content);
+
+                        }
+                        else if (choice == "2") {
+                            // Generate client report
+                            validInput = true;
+
+                            r.generateClientReport(content);
+                        }
+                        else if (choice == "3") {
+                            // Generate billing report
+                            validInput = true;
+                            r.generateBilingReport(content);
+                        }
+                        else {
+                            cout << "Invalid input. Please enter 1, 2, or 3.\n";
+                        }
+                        break;
+                    }
+                }
+                case 4: {
                     break;
                 }
                 default: {
@@ -240,36 +272,7 @@ int main() {
                             break;
                         }
                         case 3: {
-                            string choice;
-                            bool validInput = false;
-                            while (!validInput) {
-                                cout << "What report you want to generate:\n1)Sales report\n2)Client report\n3)Billing report\nMy choice is (1/2/3):";
-                                cin >> choice;
-
-                                if (choice == "1") {
-                                    // Generate sales report
-                                    validInput = true;
-
-                                    //generateSalesReport(content);
-
-                                }
-                                else if (choice == "2") {
-                                    // Generate client report
-                                    validInput = true;
-
-                                    //r.generateClientReport(content);
-                                }
-                                else if (choice == "3") {
-                                    // Generate billing report
-                                    validInput = true;
-
-                                    //r.generateBilingReport(content);
-                                }
-                                else {
-                                    cout << "Invalid input. Please enter 1, 2, or 3.\n";
-                                }
-                                break;
-                            }
+                            break;
                         }
                         default: {
                             cout << "Invalid choice. Please try again.\n";
